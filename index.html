@@ -61,13 +61,37 @@
             transition: all 1s ease;
         }
         
+        /* --- बदला हुआ CSS --- */
         #senderNameDisplay {
-            display: none; font-size: 2em; font-weight: 900; color: var(--light-text);
-            margin-top: 25px; animation: float3D 4s ease-in-out infinite;
-            text-shadow: 0px 1px 0px #ccc, 0px 2px 0px #c9c9c9,
-                0px 3px 5px rgba(0,0,0,0.2), 0px 5px 10px rgba(0,0,0,0.25);
+            display: none; /* JS द्वारा 'flex' पर सेट करें */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            animation: zoomIn 1s ease-in-out;
+        }
+        
+        .dancing-name {
+            font-size: 2.2em;
+            font-weight: 900;
+            padding: 0 10px;
+            background: linear-gradient(135deg, #ADFF2F, #00FFFF, #FFD700, #FF69B4, #ADFF2F);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient-flow 4s ease infinite, name-dance 3s ease-in-out infinite;
             letter-spacing: 2px;
         }
+
+        .from-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--light-text);
+            text-shadow: 2px 2px 4px var(--shadow-color);
+            margin-top: 8px;
+        }
+        /* --- बदला हुआ CSS समाप्त --- */
 
         .input-area { margin-top: 30px; }
         p { font-size: 1.1em; color: var(--dark-text); font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
@@ -109,12 +133,27 @@
         }
         
         @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes float3D { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
+        /* --- नए एनिमेशन कीफ्रेम --- */
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes name-dance {
+            0%, 100% { transform: rotate(-2.5deg) translateY(-4px); }
+            50% { transform: rotate(2.5deg) translateY(4px); }
+        }
+        /* --- नए एनिमेशन कीफ्रेम समाप्त --- */
 
         @media (min-width: 600px) {
             #greeting { font-size: 3.5em; }
             #quoteDisplay { font-size: 1.6em; }
-            #senderNameDisplay { font-size: 2.5em; }
+            /* --- बदला हुआ CSS --- */
+            .dancing-name { font-size: 2.8em; }
+            .from-text { font-size: 1.5em; }
+            /* --- बदला हुआ CSS समाप्त --- */
             p { font-size: 1.3em; }
             #generateBtn { padding: 15px 35px; font-size: 1.3em; }
             #whatsapp-icon { width: 28px; height: 28px; }
@@ -136,7 +175,11 @@
         <h1 id="greeting"></h1>
         <blockquote id="quoteDisplay"></blockquote>
         <img id="time-gif" src="" alt="Animation">
-        <h2 id="senderNameDisplay"></h2>
+        <!-- बदला हुआ HTML: अब यह कंटेनर नाम और टेक्स्ट को होल्ड करेगा -->
+        <div id="senderNameDisplay">
+            <span class="dancing-name"></span>
+            <span class="from-text"></span>
+        </div>
         
         <div class="input-area">
             <p>अपना नाम लिखें और यह प्यारा संदेश भेजें:</p>
@@ -207,6 +250,7 @@
             });
         }
 
+        // --- बदला हुआ जावास्क्रिप्ट ---
         window.onload = function() {
             const period = getCurrentPeriod();
             updatePageContent(period);
@@ -214,13 +258,19 @@
             const senderName = urlParams.get('name');
             const nameDisplayElement = document.getElementById('senderNameDisplay');
             const inputAreaParagraph = document.querySelector('.input-area p');
+            
             if (senderName && nameDisplayElement) {
                 const decodedName = decodeURIComponent(senderName.replace(/\+/g, ' '));
-                nameDisplayElement.innerHTML = `~ ${decodedName} की तरफ़ से ~`;
-                nameDisplayElement.style.display = 'block';
+                
+                // नए स्पैन को पॉप्युलेट करें
+                nameDisplayElement.querySelector('.dancing-name').textContent = `~ ${decodedName} ~`;
+                nameDisplayElement.querySelector('.from-text').textContent = 'की तरफ़ से';
+                
+                nameDisplayElement.style.display = 'flex'; // कंटेनर को दिखाएं
                 inputAreaParagraph.textContent = 'अब आप भी अपना नाम लिखकर आगे भेजें:';
             }
         };
+        // --- बदला हुआ जावास्क्रिप्ट समाप्त ---
 
         document.getElementById('generateBtn').addEventListener('click', async function() {
             const name = document.getElementById('nameInput').value.trim();
