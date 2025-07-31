@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="✨ आपके लिए एक प्यारा सा संदेश ✨">
+    <meta property="og:description" content="आपके किसी प्रिय ने आपके लिए एक खूबसूरत संदेश भेजा है। देखने के लिए क्लिक करें!">
+    <meta property="og:image" content="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY_NAME/good-morning.gif">
+    <meta property="og:type" content="website">
+
+    <title>Wishes for You</title>
+    
+    <style>
+        /* --- CSS स्टाइलिंग (Responsive और डायनामिक थीम) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:wght@400;700&display=swap');
+        
+        :root {
+            --bg-start: #4A90E2; --bg-mid: #FD8A8A; --bg-end: #FFC107;
+            --highlight-color: #FFC107; --dark-text: #0B3D91; --light-text: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Tiro Devanagari Hindi', serif; margin: 0; padding: 20px;
+            color: var(--light-text); overflow-x: hidden; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; min-height: 100vh;
+            background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-mid) 80%, var(--bg-end) 100%);
+            transition: background 1s ease;
+        }
+
+        #background-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-radius: 20px; padding: 25px;
+            box-shadow: 0 8px 32px 0 var(--shadow-color); max-width: 550px; width: 95%;
+            border: 1.5px solid rgba(255, 255, 255, 0.2); text-align: center;
+            z-index: 1; animation: zoomIn 1s ease-in-out;
+        }
+
+        #greeting {
+            font-size: 2.8em; font-weight: 700; color: var(--light-text);
+            text-shadow: 3px 3px 6px var(--shadow-color);
+        }
+        
+        #quoteDisplay {
+            font-size: 1.4em; font-style: italic; color: var(--light-text);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); margin: 20px 15px;
+            padding-left: 15px; border-left: 3px solid var(--highlight-color);
+            max-width: 90%; margin-left: auto; margin-right: auto;
+            transition: border-color 1s ease;
+        }
+
+        #time-gif {
+            max-width: 90%; height: auto; border-radius: 15px; margin-top: 20px;
+            border: 4px solid var(--highlight-color);
+            box-shadow: 0 0 25px color-mix(in srgb, var(--highlight-color) 70%, transparent);
+            transition: all 1s ease;
+        }
+        
+        #senderNameDisplay {
+            display: none; font-size: 2em; font-weight: 900; color: var(--light-text);
+            margin-top: 25px; animation: float3D 4s ease-in-out infinite;
+            text-shadow: 0px 1px 0px #ccc, 0px 2px 0px #c9c9c9,
+                0px 3px 5px rgba(0,0,0,0.2), 0px 5px 10px rgba(0,0,0,0.25);
+            letter-spacing: 2px;
+        }
+
+        .input-area { margin-top: 30px; }
+        p { font-size: 1.1em; color: var(--dark-text); font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+
+        #nameInput {
+            width: 85%; padding: 12px; border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.7); font-size: 1em;
+            margin-bottom: 25px; text-align: center;
+            background-color: rgba(255, 255, 255, 0.3); color: var(--dark-text);
+            transition: all 0.3s;
+        }
+        #nameInput::placeholder { color: color-mix(in srgb, var(--dark-text) 60%, transparent); }
+        #nameInput:focus {
+            outline: none; border-color: var(--highlight-color);
+            box-shadow: 0 0 15px color-mix(in srgb, var(--highlight-color) 60%, transparent);
+        }
+
+        #generateBtn {
+            background: linear-gradient(45deg, var(--highlight-color), color-mix(in srgb, var(--highlight-color) 70%, black)); 
+            color: #fff; padding: 12px 25px; border: none; border-radius: 30px;
+            font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: inline-flex;
+            align-items: center; justify-content: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        #generateBtn:hover {
+            transform: scale(1.05); box-shadow: 0 6px 20px color-mix(in srgb, var(--highlight-color) 50%, transparent);
+        }
+        #whatsapp-icon { width: 22px; height: 22px; margin-right: 10px; fill: #fff; }
+        
+        .ad-container {
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 50px;
+            z-index: 2;
+        }
+        
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float3D { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        @media (min-width: 600px) {
+            #greeting { font-size: 3.5em; }
+            #quoteDisplay { font-size: 1.6em; }
+            #senderNameDisplay { font-size: 2.5em; }
+            p { font-size: 1.3em; }
+            #generateBtn { padding: 15px 35px; font-size: 1.3em; }
+            #whatsapp-icon { width: 28px; height: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="background-canvas"></canvas>
+
+    <div class="ad-container">
+        <!-- === ऊपर वाला विज्ञापन कोड यहाँ से शुरू === -->
+        <script async="async" data-cfasync="false" src="//pl27251273.profitableratecpm.com/4602f664803407cfda1aae472a65c04e/invoke.js"></script>
+        <div id="container-4602f664803407cfda1aae472a65c04e"></div>
+        <!-- === ऊपर वाला विज्ञापन कोड यहाँ समाप्त === -->
+    </div>
+
+    <div class="container">
+        <h1 id="greeting"></h1>
+        <blockquote id="quoteDisplay"></blockquote>
+        <img id="time-gif" src="" alt="Animation">
+        <h2 id="senderNameDisplay"></h2>
+        
+        <div class="input-area">
+            <p>अपना नाम लिखें और यह प्यारा संदेश भेजें:</p>
+            <input type="text" id="nameInput" placeholder="यहाँ अपना पूरा नाम लिखें">
+            <button id="generateBtn">
+                <svg id="whatsapp-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.2 13.4c-.4.7-1.1.9-1.7.5l-1.3-.9c-.4-.3-.9-.4-1.4-.2-1.3.4-2.6.2-3.8-1-1.3-1.4-1.6-3.2-.8-4.7.4-.7 1.1-.9 1.7-.5l.7.5c.5.4.7 1.1.3 1.7l-.5 1c-.3.5-.2 1.1.2 1.5s1 .5 1.5.2l1-.5c.5-.3 1.1-.2 1.7.3l.1.1c.5.5.5 1.3.2 1.8z"/></svg>
+                WhatsApp पर भेजें
+            </button>
+        </div>
+    </div>
+    
+    <div class="ad-container">
+        <!-- === नीचे वाला विज्ञापन कोड यहाँ से शुरू === -->
+        <script async="async" data-cfasync="false" src="//pl27251273.profitableratecpm.com/4602f664803407cfda1aae472a65c04e/invoke.js"></script>
+        <div id="container-4602f664803407cfda1aae472a65c04e"></div>
+        <!-- === नीचे वाला विज्ञापन कोड यहाँ समाप्त === -->
+    </div>
+
+    <script>
+        // --- जावास्क्रिप्ट कोड यहाँ से शुरू ---
+        const timeBasedContent = {
+            morning: {
+                greeting: "🌞 शुभ प्रभात 🌞",
+                quotes: ["हर सुबह एक नया अवसर है। मुस्कुराइए और दिन की शुरुआत कीजिये!", "उठो, जागो और तब तक नहीं रुको जब तक लक्ष्य ना प्राप्त हो जाये। आपका दिन शुभ हो।", "एक छोटा सा सकारात्मक विचार आपके पूरे दिन को बदल सकता है। सुप्रभात!"],
+                gif: "good-morning.gif",
+                theme: { '--bg-start': '#4A90E2', '--bg-mid': '#FD8A8A', '--bg-end': '#FFC107', '--highlight-color': '#FFC107', '--dark-text': '#0B3D91' }
+            },
+            afternoon: {
+                greeting: "☀️ शुभ दोपहर ☀️",
+                quotes: ["कर्म वो आईना है, जो हमारा स्वरूप हमें दिखा देता है। इसलिए कर्म करते रहिये।", "दोपहर का समय आपको याद दिलाता है कि आधा दिन बीत चुका है, लेकिन अभी भी आधा दिन बाकी है।", "कड़ी मेहनत और समर्पण से आप कुछ भी हासिल कर सकते हैं। आपका दिन अच्छा रहे।"],
+                gif: "good-afternoon.gif",
+                theme: { '--bg-start': '#29B6F6', '--bg-mid': '#81D4FA', '--bg-end': '#FFEB3B', '--highlight-color': '#FFD600', '--dark-text': '#01579B' }
+            },
+            evening: {
+                greeting: "🌆 शुभ संध्या 🌆",
+                quotes: ["दिन भर की थकान के बाद, यह शाम आपके लिए शांति और सुकून लाए।", "एक खूबसूरत शाम आपको एक शांत रात के लिए तैयार करती है।", "अपने प्रियजनों के साथ इस खूबसूरत शाम का आनंद लें।"],
+                gif: "good-evening.gif",
+                theme: { '--bg-start': '#7B1FA2', '--bg-mid': '#E1BEE7', '--bg-end': '#F48FB1', '--highlight-color': '#F06292', '--dark-text': '#4A148C' }
+            },
+            night: {
+                greeting: "🌙 शुभ रात्रि 🌙",
+                quotes: ["सपनों की दुनिया में खो जाओ, कल एक नई सुबह तुम्हारा इंतजार कर रही है।", "चाँद की रोशनी आपको मीठे सपनों की ओर ले जाए। शुभ रात्रि।", "आज के लिए बस इतना ही। आराम करें और शांतिपूर्ण नींद लें।"],
+                gif: "good-night.gif",
+                theme: { '--bg-start': '#1A237E', '--bg-mid': '#3F51B5', '--bg-end': '#0D47A1', '--highlight-color': '#7986CB', '--dark-text': '#E8EAF6' }
+            }
+        };
+
+        function getCurrentPeriod() {
+            const currentHour = new Date().getHours();
+            if (currentHour >= 5 && currentHour < 12) return 'morning';
+            if (currentHour >= 12 && currentHour < 17) return 'afternoon';
+            if (currentHour >= 17 && currentHour < 21) return 'evening';
+            return 'night';
+        }
+
+        function updatePageContent(period) {
+            const content = timeBasedContent[period];
+            document.getElementById('greeting').textContent = content.greeting;
+            const quoteElement = document.getElementById('quoteDisplay');
+            const randomIndex = Math.floor(Math.random() * content.quotes.length);
+            quoteElement.textContent = `"${content.quotes[randomIndex]}"`;
+            const gifElement = document.getElementById('time-gif');
+            gifElement.src = content.gif;
+            gifElement.alt = content.greeting + " Animation";
+            const root = document.documentElement;
+            Object.keys(content.theme).forEach(key => {
+                root.style.setProperty(key, content.theme[key]);
+            });
+        }
+
+        window.onload = function() {
+            const period = getCurrentPeriod();
+            updatePageContent(period);
+            const urlParams = new URLSearchParams(window.location.search);
+            const senderName = urlParams.get('name');
+            const nameDisplayElement = document.getElementById('senderNameDisplay');
+            const inputAreaParagraph = document.querySelector('.input-area p');
+            if (senderName && nameDisplayElement) {
+                const decodedName = decodeURIComponent(senderName.replace(/\+/g, ' '));
+                nameDisplayElement.innerHTML = `~ ${decodedName} की तरफ़ से ~`;
+                nameDisplayElement.style.display = 'block';
+                inputAreaParagraph.textContent = 'अब आप भी अपना नाम लिखकर आगे भेजें:';
+            }
+        };
+
+        document.getElementById('generateBtn').addEventListener('click', async function() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) { alert("कृपया अपना नाम अवश्य लिखें!"); return; }
+            const currentGreetingText = document.getElementById('greeting').textContent;
+            const newUrl = `${window.location.origin + window.location.pathname}?name=${encodeURIComponent(name)}`;
+            const shareData = {
+                title: `✨ आपके लिए एक ${currentGreetingText} संदेश ✨`,
+                text: `आपके प्रिय ${name} ने आपके लिए यह खूबसूरत ${currentGreetingText} संदेश भेजा है!`,
+                url: newUrl,
+            };
+            if (navigator.share) {
+                try { await navigator.share(shareData); } catch (err) { console.error('Share failed:', err); }
+            } else {
+                const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        });
+
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+        for (let i = 0; i < 150; i++) {
+            particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 1.5, alpha: Math.random(), dAlpha: Math.random() * 0.01 });
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+            particles.forEach(p => {
+                p.alpha += p.dAlpha;
+                if (p.alpha > 1 || p.alpha < 0) p.dAlpha *= -1;
+                ctx.globalAlpha = p.alpha;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
